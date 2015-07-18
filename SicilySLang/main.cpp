@@ -62,6 +62,8 @@ int main(int argc, char *argv[])
     sender = new QUdpSocket();
 
     srand(unsigned int(time(0)));
+
+    SVM::Init();
     SVM::AddPath(GetDataDir("Data\\SLang\\"));
 
     MultiSLang MSL;
@@ -115,7 +117,7 @@ int main(int argc, char *argv[])
 
             if (cstr[0] == '@')script = cstr.substr(1);
             else if(cstr[1] == '#')script = cstr;
-            if (ex){
+            else if (ex){
                 script = '#';
                 for(size_t i = 0;i<cstr.size();++i){
                     char &c = cstr[i];

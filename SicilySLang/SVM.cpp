@@ -114,9 +114,10 @@ SVM::SVM(){
 }
 
 SVM::~SVM(){
-	for (map<string, SExp*>::iterator iter = sfuncs.begin(); iter != sfuncs.end(); ++iter){
-		DelSExp(iter->second);
-	}
+    //专门为SicilySLang做的优化，因为SVM实例太多了
+    //for (map<string, SExp*>::iterator iter = sfuncs.begin(); iter != sfuncs.end(); ++iter){
+    //	DelSExp(iter->second);
+    //}
 }
 
 void SVM::Init(){
