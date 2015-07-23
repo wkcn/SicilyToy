@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     QUdpSocket *sender;
     sender = new QUdpSocket();
 
-    srand(unsigned int(time(0)));
+    srand(size_t(time(0)));
 
     SVM::Init();
     SVM::AddPath(GetDataDir("Data\\SLang\\"));
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     while(true){
 
-        Sleep(1000);//ms
+        tosleep(1000);//ms
 
         //Sicily教你算算术！
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         if (cstr.size() > 0 && (isScript || ex)){
             static string oldstr;
             if (oldstr.size() == cstr.size()){
-                size_t len = min(64,cstr.size());
+                size_t len = min(64,int(cstr.size()));
                 bool can = true;
                 for(size_t i = 0;i < len;++i){
                     if (oldstr[i] != cstr[i]){

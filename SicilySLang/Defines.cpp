@@ -1,5 +1,11 @@
 ﻿#include "Defines.h"
 
+#if defined(WIN32)
+void tosleep(int s){Sleep(s);}
+#else
+void tosleep(int s){usleep(s*1000);}
+#endif
+
 SExp::SExp(){
 	parent = 0;
 }

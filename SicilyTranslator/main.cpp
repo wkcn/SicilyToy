@@ -10,6 +10,12 @@
 #include <unistd.h>
 #endif
 
+#if defined(WIN32)
+void tosleep(int s){Sleep(s);}
+#else
+void tosleep(int s){usleep(s*1000);}
+#endif
+
 #include "Trans.h"
 
 const QHostAddress addr = QHostAddress("127.0.0.1");
@@ -32,7 +38,7 @@ int main(int argc, char *argv[]){
 
     while(true){
 
-        Sleep(1000);//ms
+        tosleep(1000);//ms
 
         //Sicily教你翻译！
 

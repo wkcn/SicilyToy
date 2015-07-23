@@ -23,6 +23,8 @@ using namespace std;
 #include <unistd.h>
 #endif
 
+void tosleep(int s);
+
 struct SExp{
 	enum SEXP_TYPE{
 		VAR, FUNC, COMMAND, IF, WHILE,STR
