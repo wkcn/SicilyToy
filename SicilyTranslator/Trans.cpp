@@ -58,30 +58,19 @@ string TrieTree::find(string word){
 Trans::Trans(){
 
     //Trie Tree
-    string buf;
+
     for(int i=0;i<26;i++){
         string name = "Dict\\";
         name += char(i+'a');
         name += ".txt";
-        ifstream fin(GetStdFileDir(name).c_str());
-        if(fin.fail())break;
-        getline(fin,buf);
-        while(!fin.eof()){
-            size_t q;
-            string word;
-            for(q=0;q<buf.size();q++){
-                if(buf[q]=='~')break;
-                word += buf[q];
-            }
-            string content;
-            for(size_t u=q+1;u<buf.size();u++){
-                if(buf[u]=='|')content += '\n';
-                else content += buf[u];
-            }
-            trieTree.insert(word,content);
-            getline(fin,buf);
-        }
-        fin.close();
+        ReadFile(GetStdFileDir(name).c_str());
+    }
+
+    for(int i=0;i<26;i++){
+        string name = "Dict\\Plus\\";
+        name += char(i+'a');
+        name += ".txt";
+        ReadFile(GetStdFileDir(name).c_str());
     }
 
     //Python
@@ -97,15 +86,40 @@ Trans::Trans(){
 
     PyRun_SimpleString("sys.setdefaultencoding('utf-8')");
 
-    pDictModule = PyImport_ImportModule("Trans");
-    //qDebug("LL%d",pDictModule);
-    searchDict = PyObject_GetAttrString(pDictModule,"Dict");
-    //qDebug("ok0%d",searchDict);
-    //finished = false;
+    pTransModule = PyImport_ImportModule("Trans");
+
+    searchDict = PyObject_GetAttrString(pTransModule,"Dict");
+    translate = PyObject_GetAttrString(pTransModule,"Translate");
+
+    finished = false;
     ing = false;
 }
+
 Trans::~Trans(){
 
+}
+
+void Trans::ReadFile(const char *filename){
+    string buf;
+    ifstream fin(filename);
+    if(fin.fail())return;
+    getline(fin,buf);
+    while(!fin.eof()){
+        size_t q;
+        string word;
+        for(q=0;q<buf.size();q++){
+            if(buf[q]=='~')break;
+            word += buf[q];
+        }
+        string content;
+        for(size_t u=q+1;u<buf.size();u++){
+            if(buf[u]=='|')content += '\n';
+            else content += buf[u];
+        }
+        trieTree.insert(word,content);
+        getline(fin,buf);
+    }
+    fin.close();
 }
 
 void Trans::Set(const string& text){
@@ -145,6 +159,49 @@ void Trans::run(){
             static char s[] = "s";
             PyObject *re = PyObject_CallFunction(searchDict,s,temp.c_str());
             res = PyString_AsString(re);
+            if (!res.empty()){
+                //add to addition dictionary
+                string smallword;
+                string means;
+                bool isword = true;
+                for (auto &c:temp){
+                    if (c >= 'A' && c <='Z')smallword += c - 'A' + 'a';
+                    else {
+                        smallword += c;
+                        if (!((c >= 'a' && c <= 'z') || c == ' ')){
+                            isword = false;
+                            break;
+                        }
+                    }
+                }
+                if (isword){
+                    for (auto &c:res){
+                        if (c == '\n')means += '|';
+                        else means += c;
+                    }
+                    if (means.back() == '|')means.pop_back();
+
+                    string name = "Dict\\Plus\\";
+                    name += char(smallword[0]);
+                    name += ".txt";
+                    ofstream fout(GetStdFileDir(name).c_str(),ios::app);
+                    fout << smallword << '~' << means << endl;
+                    trieTree.insert(smallword,res);
+                }
+            }else{
+                bool ex = true;
+                static string mathSig = "+-*/() \t\r\n";
+                for (size_t i = 0;i < cstr.size();++i){
+                    if (!((cstr[i] >= '0' && cstr[i] <= '9') || mathSig.find(cstr[i])!=string::npos)){
+                        ex = false;
+                        break;
+                    }
+                }
+                if (!ex){
+                    PyObject *re = PyObject_CallFunction(translate,s,temp.c_str());
+                    res = PyString_AsString(re);
+                }
+            }
         }
 
         finished = true;

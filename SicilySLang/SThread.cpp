@@ -33,7 +33,7 @@ void SThread::run(){
     SVM vm;
     e = bu.Build();
     BigInt value = vm.Eval(e);
-    mes << "的结果是：" << endl;
+    mes << "   的结果是：" << endl;
     mes << value;
     //cout << value << endl;
     //Send(mes.str(),sender);

@@ -44,13 +44,14 @@ private:
     string cstr;
     TrieTree trieTree;
 private:
-    PyObject *pDictModule;
+    PyObject *pTransModule;
     PyObject *searchDict;
+    PyObject *translate;
 protected:
     void run();
 
 public:
-
+    void ReadFile(const  char *filename);
     void Set(const string &text);
     string Get();
     string GerOrigin();
