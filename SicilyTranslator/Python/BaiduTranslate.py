@@ -32,11 +32,14 @@ def GetHTML(text):
     return resp.read()
 
 def Translate(text):
-    html = GetHTML(text)
-    res = []
-    for s in json.loads(html)['trans_result']:
-        res.append(s['dst'])
-    return '\n'.join(res)
+    try:
+        html = GetHTML(text)
+        res = []
+        for s in json.loads(html)['trans_result']:
+            res.append(s['dst'])
+        return '\n'.join(res)
+    except:
+        return ''
 
 
 #print Translate("how are you\ntoday is a good day")

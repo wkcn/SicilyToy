@@ -183,6 +183,7 @@ void Trans::run(){
         if(count > maxLen)break;
         first = false;
     }
+
     if(temp != ori){
         ing = true;
         ori = temp;
