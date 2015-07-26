@@ -14,8 +14,10 @@
 using namespace std;
 
 struct TrieNode{
+    //TrieNode *children[26];
+    TrieNode **children;
+    char size;
     char *value;
-    TrieNode *children[26];
     TrieNode();
     ~TrieNode();
     void Set(const string &name);
@@ -24,6 +26,7 @@ struct TrieNode{
 class TrieTree{
 private:
     TrieNode *root;
+    static char ids[26];
 public:
     TrieTree();
     ~TrieTree();

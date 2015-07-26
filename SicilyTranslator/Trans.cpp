@@ -2,22 +2,37 @@
 
 TrieNode::TrieNode(){
     value = 0;
-    for(auto &c:children) c = 0;
+    size = 0;
+    //for(auto &c:children) c = 0;
 }
 
 TrieNode::~TrieNode(){
     if(!value)delete value;
-    for(auto &c:children) if(c)delete c;
+    for (int i = 0; i < size;++i){
+        if (children[i])delete children[i];
+    }
+    //for(auto &c:children) if(c)delete c;
 }
 
 void TrieNode::Set(const string &name){
     size_t len = name.length();
+    //value = new char[len + 1];
+    //strcpy(value,name.c_str());
     value = new char[len + 1];
-    strcpy(value,name.c_str());
+    for (size_t i = 0;i < len;++i)
+        value[i] = name[i];
+    value[len] = '\0';
 }
+
+char TrieTree::ids[26];
 
 TrieTree::TrieTree(){
     root = new TrieNode;
+    const char freq[26] = {'e','a','i','t','o','r','n','s','l','c','u','d','p','h','m','g','f','b','y','w','v','k','x','z','j','q'};//字母出现频率
+    char id = 0;
+    for (char c : freq){
+        ids[c - 'a'] = id++;
+    }
 }
 
 TrieTree::~TrieTree(){
@@ -31,8 +46,24 @@ void TrieTree::insert(string word, string content){
         if(c >= 'a' && c <= 'z')id = c - 'a';
         else if(c >= 'A' && c <= 'Z')id = c - 'A';
         else continue;
+
+        //一般字典树 -> 无频率统计的放缩字典树 -> 带频率统计的放缩字典树
+        //105M -> 63M -> 52M
+
+        id = ids[id];
+
+        if (id >= node->size){
+            TrieNode **nn = new TrieNode*[id + 1];
+            for (int i = 0;i < node->size;++i)nn[i] = node->children[i];//拷贝指针
+            for (int i = node->size;i <= id;++i)nn[i] = 0;
+            if(node->size > 0)delete [] node->children;
+            node->children = nn;
+            node->size = id + 1;
+        }
+
         if(!node -> children[id])node -> children[id] = new TrieNode;
         node = node -> children[id];
+
     }
     node->Set(content);
 }
@@ -46,11 +77,14 @@ string TrieTree::find(string word){
         else if(c >= 'A' && c <= 'Z')id = c - 'A';
         else continue;
 
-        if(node->children[id] == 0)return "";
+        id = ids[id];
+
+        if(id >= node->size || node->children[id] == 0)return "";
 
         node = node -> children[id];
         ok = true;
     }
+
     if (!ok || node->value == 0)return "";
     return node -> value;
 }
