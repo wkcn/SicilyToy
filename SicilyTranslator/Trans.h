@@ -2,8 +2,9 @@
 #define TRANS_H
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <QApplication>
-#include <QFileDialog>
+#include "../ToyDef.h"
+#include "Python.h"
+
 #include <QString>
 #include <QThread>
 
@@ -42,6 +43,9 @@ private:
     string ori;
     string cstr;
     TrieTree trieTree;
+private:
+    PyObject *pDictModule;
+    PyObject *searchDict;
 protected:
     void run();
 

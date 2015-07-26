@@ -2,6 +2,7 @@
 #define SLANG_DEFINES_H
 #define _CRT_SECURE_NO_WARNINGS
 #include "BigInt.h"
+#include "../ToyDef.h"
 
 #include <iostream>
 #include <fstream>
@@ -22,8 +23,6 @@ using namespace std;
 #else
 #include <unistd.h>
 #endif
-
-void tosleep(int s);
 
 struct SExp{
 	enum SEXP_TYPE{

@@ -1,41 +1,5 @@
 ﻿#include "Trans.h"
 
-QDir directoryOf(const QString &subdir)
-{
-    QDir dir(QApplication::applicationDirPath());
-
-#if defined(Q_OS_WIN)
-    if (dir.dirName().toLower() == "debug"
-            || dir.dirName().toLower() == "release"
-            || dir.dirName().toLower() == "bin")
-        dir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (dir.dirName() == "MacOS"){
-        dir.cdUp();
-        dir.cdUp();
-        dir.cdUp();
-    }
-#endif
-    dir.cd(subdir);
-    return dir;
-}
-
-
-QString GetFileDir(QString file){
-#if !defined(WIN32)
-    file = file.replace("\\","//");
-#endif
-    return directoryOf("").absoluteFilePath(file);
-}
-
-QString GetQDir(QString file){
-    return GetFileDir(file);
-}
-
-string GetDataDir(string file){
-    return GetFileDir(QString::fromStdString(file)).toStdString();
-}
-
 TrieNode::TrieNode(){
     value = 0;
     for(auto &c:children) c = 0;
@@ -92,12 +56,14 @@ string TrieTree::find(string word){
 }
 
 Trans::Trans(){
+
+    //Trie Tree
     string buf;
     for(int i=0;i<26;i++){
-        string name = "Data\\Dict\\";
+        string name = "Dict\\";
         name += char(i+'a');
         name += ".txt";
-        ifstream fin(GetDataDir(name).c_str());
+        ifstream fin(GetStdFileDir(name).c_str());
         if(fin.fail())break;
         getline(fin,buf);
         while(!fin.eof()){
@@ -117,7 +83,25 @@ Trans::Trans(){
         }
         fin.close();
     }
-    finished = false;
+
+    //Python
+    Py_Initialize();
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("reload(sys)");
+
+    //添加路径
+    PyRun_SimpleString("sys.path.append('./')");
+    string path = "sys.path.append(\'" + GetStdFileDir("Python//") + "\')";
+    qDebug("%s",path.c_str());
+    PyRun_SimpleString(path.c_str());
+
+    PyRun_SimpleString("sys.setdefaultencoding('utf-8')");
+
+    pDictModule = PyImport_ImportModule("Trans");
+    //qDebug("LL%d",pDictModule);
+    searchDict = PyObject_GetAttrString(pDictModule,"Dict");
+    //qDebug("ok0%d",searchDict);
+    //finished = false;
     ing = false;
 }
 Trans::~Trans(){
@@ -154,7 +138,15 @@ void Trans::run(){
     if(temp != ori){
         ing = true;
         ori = temp;
+
         res = trieTree.find(temp);
+        if (res.empty()){
+            //use network
+            static char s[] = "s";
+            PyObject *re = PyObject_CallFunction(searchDict,s,temp.c_str());
+            res = PyString_AsString(re);
+        }
+
         finished = true;
     }
 }

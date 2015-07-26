@@ -9,62 +9,16 @@ using namespace std;
 
 #include "MultiSLang.h"
 
-QDir directoryOf(const QString &subdir)
-{
-    QDir dir(QApplication::applicationDirPath());
-
-#if defined(Q_OS_WIN)
-    if (dir.dirName().toLower() == "debug"
-            || dir.dirName().toLower() == "release"
-            || dir.dirName().toLower() == "bin")
-        dir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (dir.dirName() == "MacOS"){
-        dir.cdUp();
-        dir.cdUp();
-        dir.cdUp();
-    }
-#endif
-    dir.cd(subdir);
-    return dir;
-}
-
-
-QString GetFileDir(QString file){
-#if !defined(WIN32)
-    file = file.replace("\\","//");
-#endif
-    return directoryOf("").absoluteFilePath(file);
-}
-
-QString GetQDir(QString file){
-    return GetFileDir(file);
-}
-
-string GetDataDir(string file){
-    return GetFileDir(QString::fromStdString(file)).toStdString();
-}
-
-const QHostAddress addr = QHostAddress("127.0.0.1");
-const int port = 3939;
-
-inline void Send(string &mes,QUdpSocket *sender,int life = 0){
-    mes += char(life);
-    sender->writeDatagram(mes.c_str(),mes.size(),addr,port);
-}
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);//使用这个才能使用剪贴板！
 
-    //那个TCP有缓存= =
-    QUdpSocket *sender;
-    sender = new QUdpSocket();
-
     srand(size_t(time(0)));
 
     SVM::Init();
-    SVM::AddPath(GetDataDir("Data\\SLang\\"));
+    SVM::AddPath(GetStdFileDir("SLang\\"));
+
+    //qDebug("%s",GetStdFileDir("SLang\\").c_str());
 
     MultiSLang MSL;
 
@@ -80,7 +34,7 @@ int main(int argc, char *argv[])
 
         res = MSL.GetRes();
         if (res.size() > 0){
-            Send(res,sender,5);
+            SicilySend(res,5);
         }
 
         QClipboard *clipboard = QApplication::clipboard();
