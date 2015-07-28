@@ -1,4 +1,4 @@
-#include "ToyDef.h"
+﻿#include "ToyDef.h"
 
 #if defined(WIN32)
 void tosleep(int s){Sleep(s);}

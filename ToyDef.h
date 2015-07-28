@@ -1,4 +1,4 @@
-#ifndef SICILY_TOY_DEFINE
+﻿#ifndef SICILY_TOY_DEFINE
 #define SICILY_TOY_DEFINE
 
 #include <QApplication>

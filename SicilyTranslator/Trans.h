@@ -3,7 +3,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "../ToyDef.h"
-#include "Python.h"
+#include <Python.h>
 
 #include <QString>
 #include <QThread>
