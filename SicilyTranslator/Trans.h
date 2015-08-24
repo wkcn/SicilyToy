@@ -1,9 +1,14 @@
 ﻿#ifndef TRANS_H
 #define TRANS_H
 #define _CRT_SECURE_NO_WARNINGS
+//使用Python
+#define _USING_PYTHON 0
 
 #include "../ToyDef.h"
+
+#if _USING_PYTHON
 #include <Python.h>
+#endif
 
 #include <QString>
 #include <QThread>
@@ -46,10 +51,12 @@ private:
     string ori;
     string cstr;
     TrieTree trieTree;
+#if _USING_PYTHON
 private:
     PyObject *pTransModule;
     PyObject *searchDict;
     PyObject *translate;
+#endif
 protected:
     void run();
 

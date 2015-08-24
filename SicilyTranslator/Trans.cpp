@@ -107,6 +107,7 @@ Trans::Trans(){
         ReadFile(GetStdFileDir(name).c_str());
     }
 
+#if _USING_PYTHON
     //Python
     Py_Initialize();
     PyRun_SimpleString("import sys");
@@ -124,6 +125,7 @@ Trans::Trans(){
 
     searchDict = PyObject_GetAttrString(pTransModule,"Dict");
     translate = PyObject_GetAttrString(pTransModule,"Translate");
+#endif
 
     finished = false;
     ing = false;
@@ -189,6 +191,7 @@ void Trans::run(){
         ori = temp;
 
         res = trieTree.find(temp);
+#if _USING_PYTHON
         if (res.empty()){
             //use network
             static char s[] = "s";
@@ -238,6 +241,7 @@ void Trans::run(){
                 }
             }
         }
+#endif
 
         finished = true;
     }
