@@ -43,7 +43,7 @@ def BingDict(word):
     res = []
     soup = BeautifulSoup(html,'html.parser')
     for span in soup.find_all(class_ = 'def'):
-        attr = span.previous_sibling.string + ' '
+        attr = span.previous_sibling.string
         means = ''.join(span.strings)
         res.append((attr,means))
     return res
