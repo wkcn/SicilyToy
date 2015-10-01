@@ -1,8 +1,8 @@
-﻿#ifndef SLANG_DEFINES_H
+#ifndef SLANG_DEFINES_H
 #define SLANG_DEFINES_H
 #define _CRT_SECURE_NO_WARNINGS
 #include "BigInt.h"
-#include "../ToyDef.h"
+#include "Poly.h"
 
 #include <iostream>
 #include <fstream>
@@ -10,19 +10,13 @@
 #include <string>
 #include <queue>
 #include <stack>
+#include <vector>
+#include <utility>
 #include <map>
 #include <cstdlib>
 #include <ctime>
 #include <cstdio>
 using namespace std;
-
-//windows 的编码问题
-#if defined(WIN32)
-#pragma execution_character_set("utf-8")
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
 
 struct SExp{
 	enum SEXP_TYPE{

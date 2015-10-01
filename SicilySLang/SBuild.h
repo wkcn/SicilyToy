@@ -1,4 +1,4 @@
-﻿#ifndef SBUILD_H
+#ifndef SBUILD_H
 #define SBUILD_H
 
 #include "Defines.h"

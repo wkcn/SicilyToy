@@ -1,6 +1,5 @@
-﻿#ifndef BIGINT_H
+#ifndef BIGINT_H
 #define BIGINT_H
-
 #include "UBigInt.h"
 //不知道是否能用继承UBigInt的方式实现？
 class BigInt{
@@ -14,7 +13,7 @@ public:
 	BigInt(const char *);
 
 	operator string();
-	operator int();
+	//operator int();重大Bug！！！
 
 	//运算符(部分使用友元，更适合强制转换）
 	//一元运算
@@ -50,6 +49,7 @@ public:
 	friend bool operator>(const BigInt&, const BigInt&);
 	friend bool operator>=(const BigInt&, const BigInt&);
 	bool isZero();//判断是否为0，用于快速判断
+	bool isMinus();
 	int GetInt();	//获取int值,会取模1 0000 0000
 public:
 	friend ostream& operator<<(ostream &, BigInt &&);

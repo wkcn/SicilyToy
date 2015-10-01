@@ -1,4 +1,4 @@
-﻿#ifndef SPAR_H
+#ifndef SPAR_H
 #define SPAR_H
 
 #include "Defines.h"
@@ -14,9 +14,9 @@ public:
 public:
 	SPar(SVM *, SExp *);
 	int size();
-	BigInt& operator[](int i);	//返回对应BigInt引用(必须是实例化),第一个参数下标为0，引用~（不能做下标0代表参数大小》）
+	Poly& operator[](int i);	//返回对应BigInt引用(必须是实例化),第一个参数下标为0，引用~（不能做下标0代表参数大小》）
 	string GetStr(int i);
-	BigInt GetNum(int i);
+	Poly GetNum(int i);
 	SExp::SEXP_TYPE GetType(int i);
 };
 

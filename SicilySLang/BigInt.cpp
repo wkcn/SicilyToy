@@ -1,4 +1,4 @@
-﻿#include "BigInt.h"
+#include "BigInt.h"
 
 BigInt::BigInt(){
 	minus = false;
@@ -40,9 +40,11 @@ BigInt::operator string(){
 	return ss.str();
 }
 
+/*
 BigInt::operator int(){
 	return GetInt();
 }
+*/
 
 //比较类
 int BigIntCmp(const BigInt &a, const BigInt &b){
@@ -85,6 +87,9 @@ bool operator>=(const BigInt &a, const BigInt &b){
 }
 bool BigInt::isZero(){
 	return num.isZero();
+}
+bool BigInt::isMinus() {
+	return minus;
 }
 int BigInt::GetInt(){
 	int w = num.GetInt();

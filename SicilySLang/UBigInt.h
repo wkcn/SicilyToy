@@ -1,11 +1,11 @@
-﻿#ifndef UBIGINT_H
+#ifndef UBIGINT_H
 #define UBIGINT_H
 
 #include "Vector.h"
 
 #include <iostream>
-#include <iomanip>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
 

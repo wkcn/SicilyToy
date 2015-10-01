@@ -1,4 +1,4 @@
-﻿#include "Defines.h"
+#include "Defines.h"
 
 SExp::SExp(){
 	parent = 0;

@@ -31,8 +31,9 @@ void SThread::run(){
     SBuild bu;
     bu.SetStream(ss);
     SVM vm;
+    vm.SetVar("x", Poly(1, 1));
     e = bu.Build();
-    BigInt value = vm.Eval(e);
+    Poly value = vm.Eval(e);
     mes << "   的结果是：" << endl;
     mes << value;
     //cout << value << endl;

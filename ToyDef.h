@@ -30,6 +30,10 @@ class SicilyToy : public QObject{
 public:
     SicilyToy();
     void Send(const string &mes,int life = 0);
+    inline void SicilySend(const string &msg,int life = 0){
+        Send(msg,life);
+    }
+
 private slots:
     void Play();
 private:

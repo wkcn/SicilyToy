@@ -1,4 +1,4 @@
-﻿#include "SPar.h"
+#include "SPar.h"
 #include "SVM.h"
 
 SPar::SPar(SVM *vm, SExp *exp){
@@ -17,10 +17,10 @@ SExp::SEXP_TYPE SPar::GetType(int i){
 string SPar::GetStr(int i){
 	return exp->elems[i]->name;
 }
-BigInt SPar::GetNum(int i){
+Poly SPar::GetNum(int i){
 	return vm->Eval(exp->elems[i]);
 }
 
-BigInt& SPar::operator[](int i){
+Poly& SPar::operator[](int i){
 	return vm->GetVar(exp->elems[i]->name);
 }

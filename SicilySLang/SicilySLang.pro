@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     UBigInt.cpp \
     SThread.cpp \
     MultiSLang.cpp \
-    ../ToyDef.cpp
+    ../ToyDef.cpp \
+    Poly.cpp
 
 HEADERS += \
     BigInt.h \
@@ -39,4 +40,5 @@ HEADERS += \
     Vector.h \
     SThread.h \
     MultiSLang.h \
-    ../ToyDef.h
+    ../ToyDef.h \
+    Poly.h

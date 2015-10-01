@@ -33,7 +33,7 @@ QString GetFileDir(QString file){
     #endif
     return DirectoryOf("").absoluteFilePath(file);
 }
-string GetFileDir(string file){
+string GetStdFileDir(string file){
     return GetFileDir(QString::fromStdString(file)).toStdString();
 }
 
