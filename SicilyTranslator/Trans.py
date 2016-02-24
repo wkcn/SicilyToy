@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 
 import BingDict
-import BaiduTranslate
+import goslate
 
 def Dict(word):
     data = BingDict.BingDict(word)
@@ -11,5 +11,10 @@ def Dict(word):
         res += attr + ' ' + means + '\n'
     return res.encode('utf-8')
 
+gs = goslate.Goslate()
 def Translate(text):
-    return BaiduTranslate.Translate(text).encode('utf-8')
+    #return BaiduTranslate.Translate(text).encode('utf-8')
+    try:
+        return gs.translate(text,'zh')
+    except BaseException as e:
+        print e

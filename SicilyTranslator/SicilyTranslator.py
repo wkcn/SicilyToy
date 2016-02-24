@@ -4,83 +4,84 @@ import time
 import socket
 import TrieTree
 import Trans
+import Sicily
+'''
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+'''
 
-
-tree = TrieTree.SDict()	#ÔİÊ±Ê¹ÓÃDict¶ø²»ÊÇ×ÖµäÊ÷
-host = 'localhost'
-port = 3939
-addr = (host, port)
+tree = TrieTree.SDict()    #æš‚æ—¶ä½¿ç”¨Dictè€Œä¸æ˜¯å­—å…¸æ ‘
 
 def ReadDict(tree,path):
-	#path includes \\
-	si = 0
-	for i in range(26):
-		fileName = path + chr(ord('a') + i) + '.txt'
-		try:
-			file = open(fileName,'r')
-			for q in file.readlines():
-				#q = q.decode('utf-8')
-				sp = q.split('~')
-				word = sp[0]
-				content = sp[1].replace('|','\n')
-				tree.insert(word,content)
-				si += 1
-			file.close()
-		except:
-			pass
-	print '¶ÁÈ¡' + path + 'ÖĞµÄ´ÊÌõ'+ str(si) + 'Ìõ'
-			
-sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-def SicilySay(data,boxLife = 0):
-	sock.sendto(data.encode('utf-8') + chr(boxLife),addr)
+    #path includes \\
+    si = 0
+    for i in range(26):
+        fileName = path + chr(ord('a') + i) + '.txt'
+        try:
+            file = open(fileName,'r')
+            for q in file.readlines():
+                #q = q.decode('utf-8')
+                sp = q.split('~')
+                word = sp[0]
+                content = sp[1].replace('|','\n')
+                tree.insert(word,content)
+                si += 1
+            file.close()
+        except:
+            pass
+    print 'è¯»å–' + path + 'ä¸­çš„è¯æ¡'+ str(si) + 'æ¡'
+            
 
-ReadDict(tree,'Dict\\')
-ReadDict(tree,'Dict\\Plus\\')
+ReadDict(tree,'Dict/')
+ReadDict(tree,'Dict/Plus/')
 
 def SicilyTranslator():
-	lastclip = pyperclip.paste()
-	while True:
-		clip = pyperclip.paste()
-		if lastclip != clip:
-			res = tree.find(clip)
-			if len(res) > 0:
-				data = clip
-				data += '\n   ÒâË¼ÊÇ£º ¡İ¨Œ¡Ü\n'.decode('gbk')
-				data += res
-				SicilySay(data,5)
-			else:
-				#Bing
-				res = Trans.Dict(clip)
-				if len(res) > 0:
-					data = clip
-					data += '\n   ÒâË¼ÊÇ£º ©d(£ş¨Œ£ş)\n'.decode('gbk')
-					data += res
-					SicilySay(data,5)
-					#append
-					tree.insert(clip,res)
-					file = open('Dict\\Plus\\' + clip[0].lower() + '.txt','a')
-					if res[-1] == '\n':
-						res = res[:-1]
-					file.write(clip.strip('\n') + '~' + res.replace('\n','|') + '\n')
-					file.close()
-					print 'Append ' + clip
-				else:
-					#baidu
-					res = Trans.Translate(clip)
-					if len(res) > 0:
-						data = clip
-						data += '\n   ÒâË¼ÊÇ£º o(^_^)o \n'.decode('gbk')
-						data += res
-						SicilySay(data,5)
-					else:
-						data = '²»ÖªµÀ°¡ ¡İ©n¡Ü'.decode('gbk')
-						SicilySay(data,0)
-						print 'sentence'
-			lastclip = clip
-		time.sleep(3)
-		
+    lastclip = pyperclip.paste()
+    while True:
+        try:
+            clip = pyperclip.paste()
+            if lastclip != clip:
+                res = tree.find(clip)
+                if len(res) > 0:
+                    data = clip
+                    data += '\n   æ„æ€æ˜¯ï¼š â‰¥â–½â‰¤\n'
+                    data += res
+                    Sicily.Say(data,5)
+                else:
+                    #Bing
+                    res = Trans.Dict(clip)
+                    if len(res) > 0:
+                        data = clip
+                        data += '\n   æ„æ€æ˜¯ï¼š ãƒ¾(ï¿£â–½ï¿£)\n'
+                        data += res
+                        Sicily.Say(data,5)
+                        #append
+                        tree.insert(clip,res)
+                        na = clip[0].lower()
+                        if na >= 'a' and na <= 'z':
+                            file = open('Dict/Plus/' + na + '.txt','a')
+                            if res[-1] == '\n':
+                                res = res[:-1]
+                            file.write(clip.strip('\n') + '~' + res.replace('\n','|') + '\n')
+                            file.close()
+                            print 'Append ' + clip
+                    else:
+                        #baidu
+                        res = Trans.Translate(clip)
+                        if len(res) > 0:
+                            data = clip
+                            data += '\n   æ„æ€æ˜¯ï¼š o(^_^)o \n'
+                            data += res
+                            Sicily.Say(data,5)
+                        else:
+                            data = 'ä¸çŸ¥é“å•Š â‰¥ï¹â‰¤'
+                            Sicily.Say(data,0)
+                            print 'sentence'
+                lastclip = clip
+        except BaseException as e:
+            print e
+        time.sleep(3)
+        
 if __name__ == '__main__':
-	SicilyTranslator()
+    SicilyTranslator()
