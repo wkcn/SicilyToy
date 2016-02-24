@@ -5,27 +5,30 @@ import cookielib
 import gzip
 import StringIO
 import json
+import md5
+from SicilyConfig import *
 from bs4 import BeautifulSoup
 
 cookie = cookielib.CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
 
 def GetHTML(text):
-    try:
-        BaiduAPIKey = ''
-        import SicilyConfig
-        BaiduAPIKey = SicilyConfig.BaiduAPIKey
-    except ImportError:
-        pass
+    
+    src = BAIDU_APPID + text + '0' + BAIDU_KEY
+    m1 = md5.new()
+    m1.update(src)
+    md5res = m1.hexdigest()
 
     params = {'from':'auto',\
               'to':'auto',\
-              'client_id':BaiduAPIKey,\
-              'q':text
+              'q':text,
+              'appid':BAIDU_APPID,
+              'salt':'0',
+              'sign':md5res
             }
 
     paramsCode = urllib.urlencode(params)
-    url = 'http://openapi.baidu.com/public/2.0/bmt/translate?' + paramsCode
+    url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?' + paramsCode
 
     req = urllib2.Request(url)
     resp = urllib2.urlopen(req)
@@ -38,8 +41,9 @@ def Translate(text):
         for s in json.loads(html)['trans_result']:
             res.append(s['dst'])
         return '\n'.join(res)
-    except:
+    except BaseException as e:
+        print e
         return ''
 
-
-#print Translate("how are you\ntoday is a good day")
+if __name__ == '__main__':
+    print Translate("how are you\ntoday is a good day")
