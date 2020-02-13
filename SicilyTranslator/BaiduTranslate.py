@@ -42,4 +42,5 @@ def Translate(text):
         return ''
 
 if __name__ == '__main__':
-    print (Translate("how are you\ntoday is a good day"))
+    res = Translate("how are you\ntoday is a good day")
+    print(res, type(res))

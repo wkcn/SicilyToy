@@ -10,11 +10,11 @@ def Dict(word):
     res = ''
     for (attr,means) in data:
         res += attr + ' ' + means + '\n'
-    return res.encode('utf-8')
+    return res
 
 #gs = goslate.Goslate()
 def Translate(text):
-    return BaiduTranslate.Translate(text).encode('utf-8')
+    return BaiduTranslate.Translate(text)
 '''
     try:
         return gs.translate(text,'zh')

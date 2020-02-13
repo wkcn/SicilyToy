@@ -48,4 +48,4 @@ def BingDict(word):
 if __name__ == '__main__':
     print("===")
     for (attr, means) in BingDict('hello'):
-        print (attr, means)
+        print (attr, means, type(attr), type(means))

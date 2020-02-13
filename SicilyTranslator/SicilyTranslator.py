@@ -84,6 +84,7 @@ def SicilyTranslator():
                             print ('sentence')
                 lastclip = clip
         except BaseException as e:
+            raise
             print (e)
         time.sleep(3)
         
