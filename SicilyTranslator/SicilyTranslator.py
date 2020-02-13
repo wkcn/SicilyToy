@@ -1,5 +1,6 @@
 #coding=utf-8
 import pyperclip
+import os
 import time
 import socket
 import TrieTree
@@ -30,11 +31,14 @@ def ReadDict(tree,path):
             file.close()
         except:
             pass
-    print '读取' + path + '中的词条'+ str(si) + '条'
+    print ('读取' + path + '中的词条'+ str(si) + '条')
             
 
-ReadDict(tree,'Dict/')
-ReadDict(tree,'Dict/Plus/')
+DICT_PLUS_DIRNAME = 'Dict/Plus/'
+if not os.path.exists(DICT_PLUS_DIRNAME):
+    os.makedirs(DICT_PLUS_DIRNAME)
+ReadDict(tree, 'Dict/')
+ReadDict(tree, DICT_PLUS_DIRNAME)
 
 def SicilyTranslator():
     lastclip = pyperclip.paste()
@@ -65,7 +69,7 @@ def SicilyTranslator():
                                 res = res[:-1]
                             file.write(clip.strip('\n') + '~' + res.replace('\n','|') + '\n')
                             file.close()
-                            print 'Append ' + clip
+                            print ('Append ' + clip)
                     else:
                         #baidu
                         res = Trans.Translate(clip)
@@ -77,10 +81,10 @@ def SicilyTranslator():
                         else:
                             data = '不知道啊 ≥﹏≤'
                             Sicily.Say(data,0)
-                            print 'sentence'
+                            print ('sentence')
                 lastclip = clip
         except BaseException as e:
-            print e
+            print (e)
         time.sleep(3)
         
 if __name__ == '__main__':

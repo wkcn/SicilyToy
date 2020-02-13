@@ -1,22 +1,18 @@
 #-*- coding:utf-8 -*-
 
-import urllib,urllib2
-import cookielib
+import urllib
 import gzip
-import StringIO
+from io import BytesIO
 import json
-import md5
+from hashlib import md5
 from SicilyConfig import *
 from bs4 import BeautifulSoup
-
-cookie = cookielib.CookieJar()
-opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
 
 def GetHTML(text):
     
     src = BAIDU_APPID + text + '0' + BAIDU_KEY
-    m1 = md5.new()
-    m1.update(src)
+    m1 = md5()
+    m1.update(src.encode('utf-8'))
     md5res = m1.hexdigest()
 
     params = {'from':'auto',\
@@ -27,11 +23,11 @@ def GetHTML(text):
               'sign':md5res
             }
 
-    paramsCode = urllib.urlencode(params)
+    paramsCode = urllib.parse.urlencode(params)
     url = 'http://api.fanyi.baidu.com/api/trans/vip/translate?' + paramsCode
 
-    req = urllib2.Request(url)
-    resp = urllib2.urlopen(req)
+    req = urllib.request.Request(url)
+    resp = urllib.request.urlopen(req)
     return resp.read()
 
 def Translate(text):
@@ -42,8 +38,8 @@ def Translate(text):
             res.append(s['dst'])
         return '\n'.join(res)
     except BaseException as e:
-        print e
+        raise
         return ''
 
 if __name__ == '__main__':
-    print Translate("how are you\ntoday is a good day")
+    print (Translate("how are you\ntoday is a good day"))

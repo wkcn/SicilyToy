@@ -1,13 +1,9 @@
 #-*- coding:utf-8 -*-
 
-import urllib,urllib2
-import cookielib
+import urllib
 import gzip
-import StringIO
+from io import BytesIO 
 from bs4 import BeautifulSoup
-
-cookie = cookielib.CookieJar()
-opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
 
 def GetHTML(word):
     params = {'q':word,\
@@ -18,7 +14,7 @@ def GetHTML(word):
             'sc':'7-5',\
             'sp':'-1',\
             'sk':''}
-    paramsCode = urllib.urlencode(params)
+    paramsCode = urllib.parse.urlencode(params)
     url = 'http://cn.bing.com/dict/search?%s' % paramsCode
 
     headers = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',\
@@ -29,9 +25,9 @@ def GetHTML(word):
             'Referer':url,\
             'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36'}
     try:
-        req = urllib2.Request(url,headers = headers);
-        resp = urllib2.urlopen(req)
-        data = StringIO.StringIO(resp.read())
+        req = urllib.request.Request(url, headers=headers)
+        resp = urllib.request.urlopen(req)
+        data = BytesIO(resp.read())
         gzipper = gzip.GzipFile(fileobj = data)
         html = gzipper.read()
         return html
@@ -49,5 +45,7 @@ def BingDict(word):
     return res
 
 
-#for (attr,means) in BingDict('hello'):
-#    print means
+if __name__ == '__main__':
+    print("===")
+    for (attr, means) in BingDict('hello'):
+        print (attr, means)
