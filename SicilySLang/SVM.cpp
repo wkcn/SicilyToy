@@ -1,13 +1,6 @@
 ﻿#include "SVM.h"
 #include "SBuild.h"
 
-map<string, Poly> SVM::vars;	//红黑树？我觉得内部也是通过new新建元素的，所以就不用指针了
-map<string, Poly> SVM::polyVars;//展开多项式，防止污染vars
-map<string, Vector<Poly>> SVM::arrays;	//数组们	//将来再设置hash
-map<string, SFunc> SVM::funcs;	//C++函数
-map<string, SExp*> SVM::sfuncs;	//Slang函数
-Vector<string> SVM::path;		//搜索目录
-
 //一些内置函数
 Poly Sprint(SPar par){
 	bool first = true;
@@ -155,6 +148,8 @@ Poly SDebug(SPar par){
 SVM::SVM(){
 	debug = false;
 	parent = 0;
+  Init();
+  AddPath("./SLang");
 }
 
 void SVM::Init(){

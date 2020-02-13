@@ -1,7 +1,6 @@
 ﻿#include "MultiSLang.h"
 
 MultiSLang::MultiSLang(){
-    SVM::Init();//初始化
 }
 
 MultiSLang::~MultiSLang(){

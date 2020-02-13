@@ -63,8 +63,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);//使用这个才能使用剪贴板！
     srand(size_t(time(0)));
-    SVM::Init();
-    SVM::AddPath(GetStdFileDir("SLang\\"));
     SicilyToy toy;
     return a.exec();
 }

@@ -11,12 +11,12 @@ typedef Poly (*SFunc)(SPar);	//让参数实例为参数，可能会影响效率
 
 class SVM{
 private:
-    static map<string, Poly> vars;	//红黑树？我觉得内部也是通过new新建元素的，所以就不用指针了
-    static map<string, Poly> polyVars;//展开多项式，防止污染vars
-    static map<string, Vector<Poly>> arrays;	//数组们	//将来再设置hash
-    static map<string, SFunc>funcs;	//C++函数
-    static map<string, SExp*>sfuncs;	//Slang函数
-    static Vector<string> path;		//搜索目录
+  map<string, Poly> vars;	//红黑树？我觉得内部也是通过new新建元素的，所以就不用指针了
+  map<string, Poly> polyVars;//展开多项式，防止污染vars
+  map<string, Vector<Poly>> arrays;	//数组们	//将来再设置hash
+  map<string, SFunc> funcs;	//C++函数
+  map<string, SExp*> sfuncs;	//Slang函数
+  Vector<string> path;		//搜索目录
 	SVM *parent;
 private:
 	Poly& GetVar(const string &);
@@ -29,9 +29,9 @@ public:
 	bool debug;
 	friend class SPar;
 
-    static void Init();
-    static void AddFunc(const string &name, SFunc f);
-    static void AddPath(const string &name);
+  void Init();
+  void AddFunc(const string &name, SFunc f);
+  void AddPath(const string &name);
 	void PrintAllVars();
 
 	void SetVar(const string &name,const Poly &value);
