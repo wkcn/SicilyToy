@@ -19,18 +19,14 @@ def ReadDict(tree,path):
     si = 0
     for i in range(26):
         fileName = path + chr(ord('a') + i) + '.txt'
-        try:
-            file = open(fileName,'r')
-            for q in file.readlines():
-                #q = q.decode('utf-8')
-                sp = q.split('~')
-                word = sp[0]
-                content = sp[1].replace('|','\n')
-                tree.insert(word,content)
-                si += 1
-            file.close()
-        except:
-            pass
+        if os.path.exists(fileName):
+            with open(fileName, 'r', encoding='utf-8') as fin:
+                for q in fin.readlines():
+                    sp = q.split('~')
+                    word = sp[0]
+                    content = sp[1].replace('|','\n')
+                    tree.insert(word,content)
+                    si += 1
     print ('读取' + path + '中的词条'+ str(si) + '条')
             
 
@@ -64,11 +60,10 @@ def SicilyTranslator():
                         tree.insert(clip,res)
                         na = clip[0].lower()
                         if na >= 'a' and na <= 'z':
-                            file = open('Dict/Plus/' + na + '.txt','a')
-                            if res[-1] == '\n':
-                                res = res[:-1]
-                            file.write(clip.strip('\n') + '~' + res.replace('\n','|') + '\n')
-                            file.close()
+                            with open('Dict/Plus/' + na + '.txt','a', encoding='utf-8') as fout:
+                                if res[-1] == '\n':
+                                    res = res[:-1]
+                                fout.write(clip.strip('\n') + '~' + res.replace('\n','|') + '\n')
                             print ('Append ' + clip)
                     else:
                         #baidu
@@ -86,7 +81,7 @@ def SicilyTranslator():
         except BaseException as e:
             raise
             print (e)
-        time.sleep(3)
+        time.sleep(1)
         
 if __name__ == '__main__':
     SicilyTranslator()
