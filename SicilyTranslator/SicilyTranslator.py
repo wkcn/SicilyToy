@@ -1,6 +1,11 @@
 #coding=utf-8
-import pyperclip
 import os
+
+WORK_PATH = os.path.dirname(__file__)
+if WORK_PATH:
+    os.chdir(WORK_PATH)
+
+import pyperclip
 import time
 import socket
 import TrieTree
@@ -23,6 +28,8 @@ def ReadDict(tree,path):
             with open(fileName, 'r', encoding='utf-8') as fin:
                 for q in fin.readlines():
                     sp = q.split('~')
+                    if len(sp) != 2:
+                        continue
                     word = sp[0]
                     content = sp[1].replace('|','\n')
                     tree.insert(word,content)
@@ -79,7 +86,6 @@ def SicilyTranslator():
                             print ('sentence')
                 lastclip = clip
         except BaseException as e:
-            raise
             print (e)
         time.sleep(1)
         
