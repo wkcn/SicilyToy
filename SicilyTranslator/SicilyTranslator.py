@@ -43,12 +43,26 @@ if not os.path.exists(DICT_PLUS_DIRNAME):
 ReadDict(tree, 'Dict/')
 ReadDict(tree, DICT_PLUS_DIRNAME)
 
+def preprocess(msg):
+    sp = msg.split('\n')
+    new_msg = ''
+    for line in sp:
+        if len(new_msg) == 0 or  new_msg[-1] != '-':
+            new_msg += '\n'
+        else:
+            new_msg = new_msg[:-1]
+        line = line.strip()
+        new_msg += line
+    return new_msg
+
 def SicilyTranslator():
     lastclip = pyperclip.paste()
     while True:
         try:
             clip = pyperclip.paste()
             if lastclip != clip:
+                lastclip = clip
+                clip = preprocess(clip)
                 res = tree.find(clip)
                 if len(res) > 0:
                     data = clip
@@ -84,7 +98,6 @@ def SicilyTranslator():
                             data = '不知道啊 ≥﹏≤'
                             Sicily.Say(data,0)
                             print ('sentence')
-                lastclip = clip
         except BaseException as e:
             print (e)
         time.sleep(1)
