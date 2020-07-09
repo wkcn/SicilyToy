@@ -47,10 +47,11 @@ def preprocess(msg):
     sp = msg.split('\n')
     new_msg = ''
     for line in sp:
-        if len(new_msg) == 0 or  new_msg[-1] != '-':
-            new_msg += '\n'
-        else:
-            new_msg = new_msg[:-1]
+        if new_msg:
+            if new_msg[-1] != '-':
+                new_msg += '\n'
+            else:
+                new_msg = new_msg[:-1]
         line = line.strip()
         new_msg += line
     return new_msg
