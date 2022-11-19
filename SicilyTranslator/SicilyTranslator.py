@@ -35,7 +35,7 @@ def ReadDict(tree,path):
                     tree.insert(word,content)
                     si += 1
     print ('读取' + path + '中的词条'+ str(si) + '条')
-            
+
 
 DICT_PLUS_DIRNAME = 'Dict/Plus/'
 if not os.path.exists(DICT_PLUS_DIRNAME):
@@ -102,6 +102,7 @@ def SicilyTranslator():
         except BaseException as e:
             print (e)
         time.sleep(1)
-        
+
+
 if __name__ == '__main__':
     SicilyTranslator()
